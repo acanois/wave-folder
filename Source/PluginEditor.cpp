@@ -2,33 +2,33 @@
 #include "PluginProcessor.h"
 
 //==============================================================================
-PluginEditor::PluginEditor (PluginProcessor& p)
-    : AudioProcessorEditor (&p), processorRef (p)
+WaveFolderProcessorEditor::WaveFolderProcessorEditor (WaveFolderProcessor& p)
+    : AudioProcessorEditor (&p), 
+      processorRef (p), 
+      mKeyboardComponent(mKeyBoardState, juce::MidiKeyboardComponent::horizontalKeyboard)
 {
     juce::ignoreUnused (processorRef);
-
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
-    setSize (400, 300);
+    addAndMakeVisible(mKeyboardComponent);
+    setSize(1280, 720);
 }
 
-PluginEditor::~PluginEditor()
+WaveFolderProcessorEditor::~WaveFolderProcessorEditor()
 {
 
 }
 
 //==============================================================================
-void PluginEditor::paint (juce::Graphics& g)
+void WaveFolderProcessorEditor::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
-
-    g.setColour (juce::Colours::white);
-    g.setFont (15.0f);
-    g.drawFittedText ("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
+    g.fillAll (getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
 }
 
-void PluginEditor::resized()
+void WaveFolderProcessorEditor::resized()
 {
-    // lay out the positions of your components
+    auto area = getLocalBounds();
+    
+    juce::Rectangle<int> componentBounds;
+    componentBounds.setBounds(100, 100, 100, 100);
+    mKeyboardComponent.setBounds(area.removeFromBottom(80).reduced(8));
 }
